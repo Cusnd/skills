@@ -1,0 +1,96 @@
+# Personal Agent Skills
+
+[![validate](https://github.com/Cusnd/skills/actions/workflows/validate.yml/badge.svg)](https://github.com/Cusnd/skills/actions/workflows/validate.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+[English](README.en.md) | 简体中文
+
+这是由 [SorenLiu](https://github.com/Cusnd) 个人维护的 agent skills 集合，面向 Codex、ChatGPT 桌面端及其他兼容 Agent Skills 格式的环境。本仓库不是 OpenAI 官方项目，也不代表相关第三方服务。
+
+仓库当前采用个人维护、Issue-only 模式：欢迎提交问题报告和功能建议，但 Pull requests 已关闭，不接受外部代码贡献。MIT 许可证仍允许你 fork、修改和独立发布符合许可证要求的版本。
+
+## Skills
+
+| Skill | 用途 | 平台与依赖 | 调用策略 |
+| --- | --- | --- | --- |
+| [`ima-pdf-extractor`](ima-pdf-extractor/SKILL.md) | 从 Windows `ima.copilot` 客户端保存用户有权导出的原始文件、PDF、笔记、文章或知识库内容，并将登录凭据和签名 URL 留在本地。 | Windows；直接资源脚本使用 Python 3.10+ 标准库；结构化内容可能需要受控的浏览器本地能力。 | 仅显式调用：`$ima-pdf-extractor`。 |
+| [`pdf-watermark-removal`](pdf-watermark-removal/SKILL.md) | 检查用户授权的 PDF，以破坏性最低的方法移除重复水印或明确指定的宣传页，并同时进行结构和渲染验证。 | 需要 agent 可用的 PDF 解析器、渲染器及图像检查能力；仓库不绑定单一工具链。 | 默认允许匹配调用；建议使用 `$pdf-watermark-removal` 明确指定。 |
+
+### `ima-pdf-extractor`
+
+- 优先保存预览中暴露的原始资源，而不是从 Chromium 缓存块猜测文件。
+- 仅处理用户明确指定且有权导出的内容；不会把“客户端可见”当作批量导出授权。
+- IMA 的部分请求形态并非公开 API，可能随客户端版本变化；失效时应重新观察当前本地会话，而不是放宽凭据边界。
+- token、cookie、账号标识、原始会话内容、签名 URL 和查询签名不得进入聊天、日志、文件名或持久化产物。
+
+### `pdf-watermark-removal`
+
+- 先结合 PDF 对象结构与页面渲染确定水印表示，再选择对象删除、窄范围裁剪/遮盖或经用户接受的栅格修复。
+- 始终写入新的派生文件，不覆盖源 PDF；源文件哈希必须保持不变。
+- 对无法可靠恢复的正文重叠水印采取失败关闭，不把遮盖、裁剪或图像修复描述为无损删除。
+
+## 安装
+
+Codex 会从用户级 `$HOME/.agents/skills` 以及仓库级 `.agents/skills` 等位置发现本地 skills。详细规则见 [OpenAI Skills 官方文档](https://learn.chatgpt.com/docs/build-skills)。本仓库按“一个顶层目录对应一个 skill”分发；只安装你需要的目录。
+
+### Windows PowerShell：复制单个 skill
+
+```powershell
+git clone https://github.com/Cusnd/skills.git
+Set-Location .\skills
+
+$target = Join-Path $HOME ".agents\skills\ima-pdf-extractor"
+if (Test-Path -LiteralPath $target) { throw "Target already exists: $target" }
+New-Item -ItemType Directory -Force -Path (Split-Path $target) | Out-Null
+Copy-Item -Recurse -LiteralPath ".\ima-pdf-extractor" -Destination $target
+```
+
+如需安装另一个 skill，将示例中的 `ima-pdf-extractor` 替换为 `pdf-watermark-removal`。已有目标目录时先检查本地修改，不要直接覆盖。
+
+### macOS/Linux：符号链接单个 skill
+
+```bash
+git clone https://github.com/Cusnd/skills.git
+cd skills
+
+mkdir -p "$HOME/.agents/skills"
+test ! -e "$HOME/.agents/skills/pdf-watermark-removal"
+ln -s "$(pwd)/pdf-watermark-removal" "$HOME/.agents/skills/pdf-watermark-removal"
+```
+
+Codex 通常会自动检测 skill 变化；若新安装项没有出现，请重启 Codex。
+
+## 调用
+
+在 Codex CLI 或 IDE 中输入 `$` 选择 skill，或在提示中直接点名：
+
+```text
+$ima-pdf-extractor 保存我已在 ima.copilot 中打开并有权导出的这份 PDF。
+
+$pdf-watermark-removal 检查这些 PDF，保留源文件并生成通过验证的去水印副本。
+```
+
+调用 skill 不会扩大任务授权。涉及下载、凭据上下文、覆盖文件、结束应用进程或其他外部状态变化时，仍以 skill 内的授权与停止条件为准。
+
+## 安全与隐私
+
+- 仅处理你拥有或获准处理的内容。
+- 不要在公开 Issue 中提交 token、cookie、授权头、签名 URL、IMA 会话文件、账号标识、私人文档或包含这些数据的截图/日志。
+- 安全漏洞请按 [`SECURITY.md`](SECURITY.md) 通过 GitHub Private Vulnerability Reporting 私下报告。
+- 仓库中的 skill 不授予对第三方服务、内容或接口的额外访问权。
+
+## Issues 与维护
+
+- [Bug report](https://github.com/Cusnd/skills/issues/new?template=bug_report.yml)：报告可复现的 skill 或仓库问题。
+- [Feature request](https://github.com/Cusnd/skills/issues/new?template=feature_request.yml)：建议改进现有 skill 或新增个人维护能力。
+- Pull requests 已关闭。维护者会自行评估 Issue，并在仓库中直接实现接受的变更。
+
+仓库维护约定见 [`AGENTS.md`](AGENTS.md)。本地结构检查入口为：
+
+```text
+python scripts/validate_repo.py
+```
+
+## 许可证
+
+本仓库源码和文档采用 [MIT License](LICENSE)。该许可证不覆盖通过 skill 处理或下载的第三方内容。

@@ -1,0 +1,6 @@
+interface:
+  display_name: "ima Content Extractor"
+  short_description: "Extract authorized files and content from ima.copilot"
+  default_prompt: "Use $ima-pdf-extractor to save user-authorized content currently available in ima.copilot."
+policy:
+  allow_implicit_invocation: false

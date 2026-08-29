@@ -1,0 +1,4 @@
+interface:
+  display_name: "PDF Watermark Removal"
+  short_description: "Remove repeated PDF overlays and verify preservation"
+  default_prompt: "Use $pdf-watermark-removal to inspect these PDFs, remove recurring watermarks without overwriting the sources, and verify the clean copies."

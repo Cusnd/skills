@@ -1,0 +1,31 @@
+name: validate
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  repository:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Validate repository
+        run: python scripts/validate_repo.py
+
+      - name: Smoke-test extractor CLIs
+        run: |
+          python ima-pdf-extractor/scripts/extract_ima_pdf.py --help
+          python ima-pdf-extractor/scripts/extract_ima_resource.py --help

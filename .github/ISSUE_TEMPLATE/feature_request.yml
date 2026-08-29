@@ -1,0 +1,60 @@
+name: Feature request
+description: Suggest an improvement to an existing skill or a new personally maintained capability.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem and desired outcome. Pull requests are disabled; accepted changes are implemented by the maintainer.
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Target
+      options:
+        - ima-pdf-extractor
+        - pdf-watermark-removal
+        - New skill
+        - Repository documentation or validation
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Use case
+      description: What real task or limitation should this address?
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe the observable result rather than prescribing an implementation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Authorization, privacy, and safety considerations
+      description: Note required permissions, sensitive data, destructive actions, or stopping conditions.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Optional. Explain any existing workflow or narrower solution you tried.
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Submission confirmation
+      options:
+        - label: I did not include credentials, signed URLs, session files, private documents, or other sensitive data.
+          required: true

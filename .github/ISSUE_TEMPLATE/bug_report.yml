@@ -1,0 +1,72 @@
+name: Bug report
+description: Report a reproducible problem in a skill or this repository.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Remove all credentials, signed URLs, session data, private documents, and personal information before submitting.
+
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Affected skill or area
+      options:
+        - ima-pdf-extractor
+        - pdf-watermark-removal
+        - Repository documentation or validation
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Use a commit SHA, release identifier, or "main".
+      placeholder: main
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe the observable result you expected.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Describe what happened, including a sanitized error summary when useful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Provide the smallest authorized reproduction. Do not attach private source files or session captures.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include Codex or ChatGPT surface, operating system, Python version, and relevant public tool versions.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety confirmation
+      options:
+        - label: I removed tokens, cookies, signed URLs, account identifiers, session files, private documents, and other sensitive data.
+          required: true
+        - label: This is not a security vulnerability requiring private disclosure.
+          required: true

@@ -1,0 +1,96 @@
+# Personal Agent Skills
+
+[![validate](https://github.com/Cusnd/skills/actions/workflows/validate.yml/badge.svg)](https://github.com/Cusnd/skills/actions/workflows/validate.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+English | [简体中文](README.md)
+
+This is a personally maintained collection of agent skills by [SorenLiu](https://github.com/Cusnd), intended for Codex, the ChatGPT desktop app, and other environments compatible with the Agent Skills format. It is not an official OpenAI project and does not represent any referenced third-party service.
+
+The repository follows a personal, issue-only maintenance model: bug reports and feature requests are welcome, but pull requests are disabled and external code contributions are not accepted. The MIT License still permits forks, modifications, and independent distributions that comply with its terms.
+
+## Skills
+
+| Skill | Purpose | Platform and dependencies | Invocation policy |
+| --- | --- | --- | --- |
+| [`ima-pdf-extractor`](ima-pdf-extractor/SKILL.md) | Save original files, PDFs, notes, articles, or knowledge-base content that a user is authorized to export from the Windows `ima.copilot` client while keeping credentials and signed URLs local. | Windows; direct-resource scripts use only the Python 3.10+ standard library; structured content may require controlled, browser-local capabilities. | Explicit invocation only: `$ima-pdf-extractor`. |
+| [`pdf-watermark-removal`](pdf-watermark-removal/SKILL.md) | Inspect user-authorized PDFs, remove recurring watermarks or explicitly requested promotional pages with the least destructive method, and verify both structure and rendering. | Requires PDF parsers, renderers, and image-inspection capabilities available to the agent; the repository does not bind one toolchain. | Implicit matching is allowed by default; explicit `$pdf-watermark-removal` invocation is recommended. |
+
+### `ima-pdf-extractor`
+
+- Prefers the original resource exposed by a preview instead of guessing files from Chromium cache blocks.
+- Operates only on explicitly identified content the user is authorized to export; visibility in the client is not treated as bulk-export permission.
+- Some observed IMA request shapes are not public APIs and may drift with client releases. Re-observe the current local session when they fail instead of weakening credential boundaries.
+- Tokens, cookies, account identifiers, raw session contents, signed URLs, and query signatures must not enter chat, logs, filenames, or persistent artifacts.
+
+### `pdf-watermark-removal`
+
+- Uses PDF object structure and rendered pages to identify the watermark representation before choosing object removal, narrow cropping/redaction, or user-approved raster reconstruction.
+- Always writes a derivative and never overwrites the source PDF; the source hash must remain unchanged.
+- Fails closed when a watermark overlaps content that cannot be recovered reliably, and never describes masking, cropping, or image repair as lossless removal.
+
+## Installation
+
+Codex discovers local skills from locations including the user-level `$HOME/.agents/skills` directory and repository-level `.agents/skills` directories. See the [official OpenAI Skills documentation](https://learn.chatgpt.com/docs/build-skills) for the complete discovery rules. This repository distributes one skill per top-level directory; install only the directory you need.
+
+### Windows PowerShell: copy one skill
+
+```powershell
+git clone https://github.com/Cusnd/skills.git
+Set-Location .\skills
+
+$target = Join-Path $HOME ".agents\skills\ima-pdf-extractor"
+if (Test-Path -LiteralPath $target) { throw "Target already exists: $target" }
+New-Item -ItemType Directory -Force -Path (Split-Path $target) | Out-Null
+Copy-Item -Recurse -LiteralPath ".\ima-pdf-extractor" -Destination $target
+```
+
+Replace `ima-pdf-extractor` with `pdf-watermark-removal` to install the other skill. Inspect local changes before replacing any existing target directory.
+
+### macOS/Linux: symlink one skill
+
+```bash
+git clone https://github.com/Cusnd/skills.git
+cd skills
+
+mkdir -p "$HOME/.agents/skills"
+test ! -e "$HOME/.agents/skills/pdf-watermark-removal"
+ln -s "$(pwd)/pdf-watermark-removal" "$HOME/.agents/skills/pdf-watermark-removal"
+```
+
+Codex normally detects skill changes automatically. Restart Codex if a newly installed skill does not appear.
+
+## Invocation
+
+In Codex CLI or the IDE extension, type `$` to select a skill or name it directly in the prompt:
+
+```text
+$ima-pdf-extractor save this PDF that I opened in ima.copilot and am authorized to export.
+
+$pdf-watermark-removal inspect these PDFs, preserve the sources, and produce verified watermark-free copies.
+```
+
+Invoking a skill does not expand task authorization. Downloads, credential context, file replacement, application termination, and other external state changes remain subject to the skill's authorization checks and stopping conditions.
+
+## Security and privacy
+
+- Process only content you own or are authorized to handle.
+- Never put tokens, cookies, authorization headers, signed URLs, IMA session files, account identifiers, private documents, or screenshots/logs containing those values in a public Issue.
+- Report vulnerabilities privately through GitHub Private Vulnerability Reporting as described in [`SECURITY.md`](SECURITY.md).
+- Skills in this repository do not grant additional rights to third-party services, content, or interfaces.
+
+## Issues and maintenance
+
+- [Bug report](https://github.com/Cusnd/skills/issues/new?template=bug_report.yml): report a reproducible skill or repository problem.
+- [Feature request](https://github.com/Cusnd/skills/issues/new?template=feature_request.yml): suggest an improvement or a new personally maintained capability.
+- Pull requests are disabled. The maintainer evaluates Issues and implements accepted changes directly in the repository.
+
+See [`AGENTS.md`](AGENTS.md) for the repository maintenance contract. Run the local structural check with:
+
+```text
+python scripts/validate_repo.py
+```
+
+## License
+
+Repository source and documentation are available under the [MIT License](LICENSE). The license does not cover third-party content processed or downloaded through a skill.

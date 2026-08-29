@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environments
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local extraction, sessions, and diagnostic output
+Tabs_*
+downloads/
+output/
+outputs/
+artifacts/
+tmp/
+temp/
+*.signed-url*
+*.session-dump*
+*.network-capture*
+
+# Packaging
+dist/
+build/
+*.egg-info/
