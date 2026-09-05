@@ -38,8 +38,8 @@ The observed request header builder combined `IMA-GUID`, `IMA-REFRESH-TOKEN`, `I
 | Observed `media_type` | Representation | Local result |
 |---|---|---|
 | `2` | URL text | Save the resolved URL as UTF-8 `.txt` unless the user requests an offline capture. |
-| `6` | WeChat article | Fetch the article, preserve HTML, and localize images; fall back to URL text if capture fails. |
-| `11` | IMA notebook | Retrieve structured note JSON and render Markdown or HTML with attachment/image mapping. |
+| `6` | WeChat article | For a requested offline copy, preserve HTML and localize images; otherwise preserve the source URL. If capture fails, report the URL fallback as incomplete offline capture. |
+| `11` | IMA notebook | Retrieve structured note JSON and render the requested format, defaulting to Markdown, with attachment/image mapping. |
 | Other | Direct media/file | Preserve the original bytes from the resolved media URL. |
 
 Do not rely on these numeric values alone. Cross-check title, source path, content type, returned metadata, and current ima behavior.
@@ -65,7 +65,7 @@ The client used paginated requests and recursively collected folders and documen
 6. support incremental comparison by stable media ID and update time, while keeping the static content archive separate from download history;
 7. stop on repeated authentication or permission failures rather than widening access or refreshing indefinitely.
 
-Before bulk download, show or otherwise verify the resolved knowledge-base title, document count, folder count, destination mode (`directory` or `zip`), and incremental/full choice.
+Before bulk download, show or otherwise verify the resolved knowledge-base title, document count, folder count, destination mode (`directory` or `zip`), and incremental/full choice against the user's authorization. Reuse choices already supplied; ask only for missing choices or a discrepancy that changes scope. Keep the export and manifest outside the source repository.
 
 ## Media resolution
 
@@ -97,7 +97,7 @@ Expected transformation pipeline:
 1. verify the response identifies the requested note;
 2. retain the raw structured content in temporary memory until rendering succeeds;
 3. build an attachment/link map from note link metadata and media preview URLs;
-4. choose Markdown or HTML explicitly;
+4. use the requested Markdown or HTML format, defaulting to Markdown when unspecified;
 5. render headings, text, emphasis, links, lists/indentation, line breaks, and images;
 6. download images into a deterministic adjacent asset directory and rewrite links to relative paths;
 7. sanitize Windows filenames and reserved device names without changing the note title inside the document;
@@ -108,7 +108,7 @@ The recovered exporter contained a Rust/WASM renderer with a `core_dispatch` ent
 ## Article and URL extraction
 
 - URL item: preserve the URL as text by default. Only crawl it when the user requests an offline copy and the page is within scope.
-- WeChat article: capture the substantive article HTML, title, publication metadata when present, and article images. Rewrite image links to stable relative paths and keep a source URL in metadata without embedding cookies or signed parameters.
+- WeChat article: preserve the source URL by default. For a requested offline copy, capture substantive article HTML, title, publication metadata when present, and article images. Rewrite image links to stable relative paths and keep a source URL in metadata without embedding cookies or signed parameters.
 - If scripts or anti-bot behavior prevent a reliable offline copy, deliver the URL representation and explain the limitation instead of saving an incomplete page as successful.
 
 ## Output and failure semantics
@@ -117,4 +117,5 @@ The recovered exporter contained a Rust/WASM renderer with a `core_dispatch` ent
 - ZIP mode should stream entries, finalize only after the queue completes, and treat an interrupted archive as failed rather than deliverable.
 - Preserve original file bytes for direct media. Rendered notes/articles are derivatives and should be labeled as such.
 - Record per-item success, skip, unauthorized, deleted, expired, conversion failure, and download failure states.
+- After a session refresh, persistent authentication or permission failures stop the affected operation. Retain verified results and report incomplete items; a URL fallback does not count as a completed offline copy. Reuse still-applicable results when the user changes the destination or narrows scope.
 - Never mark quota, membership, or third-party backend status as part of a local extractor; those are unrelated commercial controls.

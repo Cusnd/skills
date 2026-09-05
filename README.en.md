@@ -20,6 +20,7 @@ The repository follows a personal, issue-only maintenance model: bug reports and
 
 - Prefers the original resource exposed by a preview instead of guessing files from Chromium cache blocks.
 - Operates only on explicitly identified content the user is authorized to export; visibility in the client is not treated as bulk-export permission.
+- Reuses established targets, title terms, and authorization; asks only about ambiguity, missing scope, or an action the user must perform. Verifies scope and mode before bulk download. Notes default to Markdown; URLs and articles default to saved links, with offline copies generated on request.
 - Some observed IMA request shapes are not public APIs and may drift with client releases. Re-observe the current local session when they fail instead of weakening credential boundaries.
 - Tokens, cookies, account identifiers, raw session contents, signed URLs, and query signatures must not enter chat, logs, filenames, or persistent artifacts.
 
@@ -27,6 +28,7 @@ The repository follows a personal, issue-only maintenance model: bug reports and
 
 - Uses PDF object structure and rendered pages to identify the watermark representation before choosing object removal, narrow cropping/redaction, or user-approved raster reconstruction.
 - Always writes a derivative and never overwrites the source PDF; the source hash must remain unchanged.
+- A watermark-only request does not include page deletion. Removes only explicitly requested pages, or verified promotional pages when promotional-page cleanup is part of the request.
 - Fails closed when a watermark overlaps content that cannot be recovered reliably, and never describes masking, cropping, or image repair as lossless removal.
 
 ## Installation
@@ -70,7 +72,9 @@ $ima-pdf-extractor save this PDF that I opened in ima.copilot and am authorized 
 $pdf-watermark-removal inspect these PDFs, preserve the sources, and produce verified watermark-free copies.
 ```
 
-Invoking a skill does not expand task authorization. Downloads, credential context, file replacement, application termination, and other external state changes remain subject to the skill's authorization checks and stopping conditions.
+Invoking a skill does not expand task authorization. Established authorization and choices remain valid within the current task without repeated confirmation; added scope, forced application termination, CDP troubleshooting, and raster reconstruction remain subject to each skill's applicable authorization checks and stopping conditions. Temporary content and deliverables stay outside the source repository.
+
+Deliver once applicable verification passes; add checks only for new changes, failures, or unresolved concerns. Batch tasks retain verified results and report failures individually; a URL fallback does not count as a completed offline copy.
 
 ## Security and privacy
 
