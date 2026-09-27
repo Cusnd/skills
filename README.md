@@ -14,6 +14,7 @@
 | Skill | 用途 | 平台与依赖 | 调用策略 |
 | --- | --- | --- | --- |
 | [`ima-pdf-extractor`](ima-pdf-extractor/SKILL.md) | 从 Windows `ima.copilot` 客户端保存用户有权导出的原始文件、PDF、笔记、文章或知识库内容，并将登录凭据和签名 URL 留在本地。 | Windows；直接资源脚本使用 Python 3.10+ 标准库；结构化内容可能需要受控的浏览器本地能力。 | 仅显式调用：`$ima-pdf-extractor`。 |
+| [`orchestrate-workflow`](orchestrate-workflow/SKILL.md) | 在用户请求多代理或独立会话编排的中等、复杂任务中，由当前会话协调真实执行器完成交付；复杂任务的具体执行全部委派。 | 支持真实子代理或独立执行上下文的 agent 环境；具体能力以宿主可调用工具为准。 | 默认允许匹配调用；建议使用 `$orchestrate-workflow` 明确指定。 |
 | [`pdf-watermark-removal`](pdf-watermark-removal/SKILL.md) | 检查用户授权的 PDF，以破坏性最低的方法移除重复水印或明确指定的宣传页，并同时进行结构和渲染验证。 | 需要 agent 可用的 PDF 解析器、渲染器及图像检查能力；仓库不绑定单一工具链。 | 默认允许匹配调用；建议使用 `$pdf-watermark-removal` 明确指定。 |
 
 ### `ima-pdf-extractor`
@@ -23,6 +24,12 @@
 - 沿用已明确的目标、关键词和授权，仅在目标歧义、范围缺失或需要用户操作时提问；批量下载前核实范围与模式。笔记默认 Markdown，URL 和文章默认保存链接，离线副本按请求生成。
 - IMA 的部分请求形态并非公开 API，可能随客户端版本变化；失效时应重新观察当前本地会话，而不是放宽凭据边界。
 - token、cookie、账号标识、原始会话内容、签名 URL 和查询签名不得进入聊天、日志、文件名或持久化产物。
+
+### `orchestrate-workflow`
+
+- 当前会话持续承担编排与用户沟通，保留用户意图、总体决策和协调上下文；普通小任务不适用。
+- 中等任务可直接使用子代理承担聚焦工作；复杂任务的调查、实现、验证、集成和后续修复全部交给真实执行上下文，编排会话评估结果并协调交付。
+- 按工作边界和依赖选择并行或串行，交接任务所需上下文并隔离宿主编排策略；沿用实际授权，不因委派或 YOLO 模式扩大外部操作权限。
 
 ### `pdf-watermark-removal`
 
@@ -47,7 +54,7 @@ New-Item -ItemType Directory -Force -Path (Split-Path $target) | Out-Null
 Copy-Item -Recurse -LiteralPath ".\ima-pdf-extractor" -Destination $target
 ```
 
-如需安装另一个 skill，将示例中的 `ima-pdf-extractor` 替换为 `pdf-watermark-removal`。已有目标目录时先检查本地修改，不要直接覆盖。
+如需安装另一个 skill，将示例中的 `ima-pdf-extractor` 替换为上方目录表中所需的 skill 名称。已有目标目录时先检查本地修改，不要直接覆盖。
 
 ### macOS/Linux：符号链接单个 skill
 
@@ -68,6 +75,8 @@ Codex 通常会自动检测 skill 变化；若新安装项没有出现，请重�
 
 ```text
 $ima-pdf-extractor 保存我已在 ima.copilot 中打开并有权导出的这份 PDF。
+
+$orchestrate-workflow 由当前会话协调真实执行器完成这个复杂任务，保留我的意图，并委派实现和验证。
 
 $pdf-watermark-removal 检查这些 PDF，保留源文件并生成通过验证的去水印副本。
 ```

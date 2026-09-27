@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orchestrate Workflow"
+  short_description: "Orchestrate complex work with execution fully delegated"
+  default_prompt: "Use $orchestrate-workflow with this session as the persistent orchestrator to delegate all execution of this complex task to real executors, preserve my intent, and coordinate complete delivery."

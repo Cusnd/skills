@@ -14,6 +14,7 @@ The repository follows a personal, issue-only maintenance model: bug reports and
 | Skill | Purpose | Platform and dependencies | Invocation policy |
 | --- | --- | --- | --- |
 | [`ima-pdf-extractor`](ima-pdf-extractor/SKILL.md) | Save original files, PDFs, notes, articles, or knowledge-base content that a user is authorized to export from the Windows `ima.copilot` client while keeping credentials and signed URLs local. | Windows; direct-resource scripts use only the Python 3.10+ standard library; structured content may require controlled, browser-local capabilities. | Explicit invocation only: `$ima-pdf-extractor`. |
+| [`orchestrate-workflow`](orchestrate-workflow/SKILL.md) | Keep the invoking session as orchestrator for medium or complex tasks when the user requests multi-agent or independent-session orchestration; delegate all concrete execution for complex tasks. | An agent environment with real subagents or independent executor contexts; capabilities depend on the host's callable tools. | Implicit matching is allowed by default; explicit `$orchestrate-workflow` invocation is recommended. |
 | [`pdf-watermark-removal`](pdf-watermark-removal/SKILL.md) | Inspect user-authorized PDFs, remove recurring watermarks or explicitly requested promotional pages with the least destructive method, and verify both structure and rendering. | Requires PDF parsers, renderers, and image-inspection capabilities available to the agent; the repository does not bind one toolchain. | Implicit matching is allowed by default; explicit `$pdf-watermark-removal` invocation is recommended. |
 
 ### `ima-pdf-extractor`
@@ -23,6 +24,12 @@ The repository follows a personal, issue-only maintenance model: bug reports and
 - Reuses established targets, title terms, and authorization; asks only about ambiguity, missing scope, or an action the user must perform. Verifies scope and mode before bulk download. Notes default to Markdown; URLs and articles default to saved links, with offline copies generated on request.
 - Some observed IMA request shapes are not public APIs and may drift with client releases. Re-observe the current local session when they fail instead of weakening credential boundaries.
 - Tokens, cookies, account identifiers, raw session contents, signed URLs, and query signatures must not enter chat, logs, filenames, or persistent artifacts.
+
+### `orchestrate-workflow`
+
+- Keeps the invoking session responsible for orchestration and user communication, retaining user intent, overall decisions, and coordination context. Ordinary small tasks are excluded.
+- Medium tasks can use subagents to own focused work. Complex tasks delegate investigation, implementation, verification, integration, and follow-up fixes to real executor contexts while the orchestrator assesses results and coordinates delivery.
+- Chooses parallel or serial work from ownership boundaries and dependencies, hands off relevant task context while isolating host orchestration policy, and preserves actual authorization. Delegation and YOLO mode do not expand permission for external actions.
 
 ### `pdf-watermark-removal`
 
@@ -47,7 +54,7 @@ New-Item -ItemType Directory -Force -Path (Split-Path $target) | Out-Null
 Copy-Item -Recurse -LiteralPath ".\ima-pdf-extractor" -Destination $target
 ```
 
-Replace `ima-pdf-extractor` with `pdf-watermark-removal` to install the other skill. Inspect local changes before replacing any existing target directory.
+Replace `ima-pdf-extractor` with the desired skill name from the catalog above to install another skill. Inspect local changes before replacing any existing target directory.
 
 ### macOS/Linux: symlink one skill
 
@@ -68,6 +75,8 @@ In Codex CLI or the IDE extension, type `$` to select a skill or name it directl
 
 ```text
 $ima-pdf-extractor save this PDF that I opened in ima.copilot and am authorized to export.
+
+$orchestrate-workflow keep this session as orchestrator, preserve my intent, and delegate implementation and verification of this complex task to real executors.
 
 $pdf-watermark-removal inspect these PDFs, preserve the sources, and produce verified watermark-free copies.
 ```
