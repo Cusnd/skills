@@ -13,9 +13,17 @@
 
 | Skill | 用途 | 平台与依赖 | 调用策略 |
 | --- | --- | --- | --- |
+| [`frontend-design-concept`](frontend-design-concept/SKILL.md) | 在实现前端之前，将审美经验提炼为具体、有画面感、可修改的设计描述；按请求独立交付构思，或据此实现并检查页面。 | 构思阶段不绑定工具；实现与视觉验证使用目标项目的技术栈及可用的浏览器能力。 | 默认允许匹配调用；可使用 `$frontend-design-concept` 明确指定。 |
 | [`ima-pdf-extractor`](ima-pdf-extractor/SKILL.md) | 从 Windows `ima.copilot` 客户端保存用户有权导出的原始文件、PDF、笔记、文章或知识库内容，并将登录凭据和签名 URL 留在本地。 | Windows；直接资源脚本使用 Python 3.10+ 标准库；结构化内容可能需要受控的浏览器本地能力。 | 仅显式调用：`$ima-pdf-extractor`。 |
 | [`orchestrate-workflow`](orchestrate-workflow/SKILL.md) | 在用户请求多代理或独立会话编排的中等、复杂任务中，由当前会话协调真实执行器完成交付；复杂任务的具体执行全部委派。 | 支持真实子代理或独立执行上下文的 agent 环境；具体能力以宿主可调用工具为准。 | 默认允许匹配调用；建议使用 `$orchestrate-workflow` 明确指定。 |
 | [`pdf-watermark-removal`](pdf-watermark-removal/SKILL.md) | 检查用户授权的 PDF，以破坏性最低的方法移除重复水印或明确指定的宣传页，并同时进行结构和渲染验证。 | 需要 agent 可用的 PDF 解析器、渲染器及图像检查能力；仓库不绑定单一工具链。 | 默认允许匹配调用；建议使用 `$pdf-watermark-removal` 明确指定。 |
+
+### `frontend-design-concept`
+
+- 先将网站的气质、构图、阅读顺序与使用感受写成连贯的设计描述，让审美方向可以被阅读和修改。
+- 从内容与用途推导视觉选择，将感受落实到位置、比例、字体、色彩和交互关系，避免只给出风格标签。
+- 只要求构思时独立交付描述；要求实现时先呈现构思再继续，用户明确要求先审核时才等待确认。
+- 实现后对照实际渲染检查设计意图与使用体验，区分技术检查通过和视觉验证完成。
 
 ### `ima-pdf-extractor`
 
@@ -74,6 +82,8 @@ Codex 通常会自动检测 skill 变化；若新安装项没有出现，请重�
 在 Codex CLI 或 IDE 中输入 `$` 选择 skill，或在提示中直接点名：
 
 ```text
+$frontend-design-concept 为这个网站先写一份具体、有画面感的设计描述，再根据描述实现前端。
+
 $ima-pdf-extractor 保存我已在 ima.copilot 中打开并有权导出的这份 PDF。
 
 $orchestrate-workflow 由当前会话协调真实执行器完成这个复杂任务，保留我的意图，并委派实现和验证。

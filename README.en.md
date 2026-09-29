@@ -13,9 +13,17 @@ The repository follows a personal, issue-only maintenance model: bug reports and
 
 | Skill | Purpose | Platform and dependencies | Invocation policy |
 | --- | --- | --- | --- |
+| [`frontend-design-concept`](frontend-design-concept/SKILL.md) | Distill aesthetic knowledge into a vivid, specific, editable design description before frontend work; deliver the concept alone or implement and verify the page as requested. | No tool dependency for ideation; implementation and visual verification use the target project's stack and available browser capabilities. | Implicit matching is allowed by default; use `$frontend-design-concept` to invoke it explicitly. |
 | [`ima-pdf-extractor`](ima-pdf-extractor/SKILL.md) | Save original files, PDFs, notes, articles, or knowledge-base content that a user is authorized to export from the Windows `ima.copilot` client while keeping credentials and signed URLs local. | Windows; direct-resource scripts use only the Python 3.10+ standard library; structured content may require controlled, browser-local capabilities. | Explicit invocation only: `$ima-pdf-extractor`. |
 | [`orchestrate-workflow`](orchestrate-workflow/SKILL.md) | Keep the invoking session as orchestrator for medium or complex tasks when the user requests multi-agent or independent-session orchestration; delegate all concrete execution for complex tasks. | An agent environment with real subagents or independent executor contexts; capabilities depend on the host's callable tools. | Implicit matching is allowed by default; explicit `$orchestrate-workflow` invocation is recommended. |
 | [`pdf-watermark-removal`](pdf-watermark-removal/SKILL.md) | Inspect user-authorized PDFs, remove recurring watermarks or explicitly requested promotional pages with the least destructive method, and verify both structure and rendering. | Requires PDF parsers, renderers, and image-inspection capabilities available to the agent; the repository does not bind one toolchain. | Implicit matching is allowed by default; explicit `$pdf-watermark-removal` invocation is recommended. |
+
+### `frontend-design-concept`
+
+- Describes the site's character, composition, reading sequence, and experience in coherent prose so the aesthetic direction can be read and revised.
+- Derives visual decisions from content and purpose, connecting desired impressions to position, proportion, typography, color, and interaction rather than supplying style labels alone.
+- Delivers the description independently for concept-only requests; for implementation requests, presents the concept before continuing and waits when the user explicitly requests review first.
+- Compares actual rendering with the design intent and usability, distinguishing technical checks from completed visual verification.
 
 ### `ima-pdf-extractor`
 
@@ -74,6 +82,8 @@ Codex normally detects skill changes automatically. Restart Codex if a newly ins
 In Codex CLI or the IDE extension, type `$` to select a skill or name it directly in the prompt:
 
 ```text
+$frontend-design-concept write a vivid, specific design description for this website, then implement the frontend from that description.
+
 $ima-pdf-extractor save this PDF that I opened in ima.copilot and am authorized to export.
 
 $orchestrate-workflow keep this session as orchestrator, preserve my intent, and delegate implementation and verification of this complex task to real executors.

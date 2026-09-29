@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Design Concept"
+  short_description: "Describe a visual direction before building the frontend"
+  default_prompt: "Use $frontend-design-concept to write a vivid, specific design concept for this website before implementing the frontend from that description."
