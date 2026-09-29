@@ -13,15 +13,15 @@ The repository follows a personal, issue-only maintenance model: bug reports and
 
 | Skill | Purpose | Platform and dependencies | Invocation policy |
 | --- | --- | --- | --- |
-| [`frontend-design-concept`](frontend-design-concept/SKILL.md) | Interpret visual styles and sensory language through art direction, developing form, color, space, texture, and movement into an editable design description before frontend work. | No tool dependency for ideation; implementation and visual verification use the target project's stack and available browser capabilities. | Implicit matching is allowed by default; use `$frontend-design-concept` to invoke it explicitly. |
+| [`frontend-design-concept`](frontend-design-concept/SKILL.md) | Interpret references, styles, and sensory language, explain the aesthetic relationships that give a design its character, and develop a vivid description before frontend work. | No tool dependency for ideation; implementation and visual verification use the target project's stack and available browser capabilities. | Implicit matching is allowed by default; use `$frontend-design-concept` to invoke it explicitly. |
 | [`ima-pdf-extractor`](ima-pdf-extractor/SKILL.md) | Save original files, PDFs, notes, articles, or knowledge-base content that a user is authorized to export from the Windows `ima.copilot` client while keeping credentials and signed URLs local. | Windows; direct-resource scripts use only the Python 3.10+ standard library; structured content may require controlled, browser-local capabilities. | Explicit invocation only: `$ima-pdf-extractor`. |
 | [`orchestrate-workflow`](orchestrate-workflow/SKILL.md) | Keep the invoking session as orchestrator for medium or complex tasks when the user requests multi-agent or independent-session orchestration; delegate all concrete execution for complex tasks. | An agent environment with real subagents or independent executor contexts; capabilities depend on the host's callable tools. | Implicit matching is allowed by default; explicit `$orchestrate-workflow` invocation is recommended. |
 | [`pdf-watermark-removal`](pdf-watermark-removal/SKILL.md) | Inspect user-authorized PDFs, remove recurring watermarks or explicitly requested promotional pages with the least destructive method, and verify both structure and rendering. | Requires PDF parsers, renderers, and image-inspection capabilities available to the agent; the repository does not bind one toolchain. | Implicit matching is allowed by default; explicit `$pdf-watermark-removal` invocation is recommended. |
 
 ### `frontend-design-concept`
 
-- Develops an artistic vision through evocative prose about form, color, space, texture, and movement before adding interface implementation notes.
-- Interprets style and sensory phrases such as "flat" or "an airy, lingering finish," allowing emotion, ornament, and visual tension without immediately reducing them to CSS effects or component lists.
+- Uses aesthetic judgment to explain how style, form, color, touch, copy, and interaction give a design its character, exploring its most distinctive relationships in depth.
+- Learns from the depth of reference analyses while adapting the writing to the current content; avoids fixed chapters, style recipes, and parameters, adding precision when the task needs it.
 - Delivers the description independently for concept-only requests; for implementation requests, presents the concept before continuing and waits when the user explicitly requests review first.
 - Reviews overall expression and local details in the actual rendering before checking reading and interaction; passing technical checks does not establish artistic success.
 
