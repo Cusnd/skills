@@ -1,6 +1,6 @@
 ---
 name: orchestrate-workflow
-description: Make the invoking session the orchestrator for medium or complex tasks when the user requests multi-agent or independent-session orchestration. For complex tasks, delegate all execution to real executor contexts. Exclude ordinary small tasks.
+description: Make the invoking session the orchestrator for medium or complex tasks only when the user explicitly invokes $orchestrate-workflow or asks to use this skill by name. For complex tasks, delegate all execution to real executor contexts. Do not activate from task complexity or a general request for multi-agent work alone. Exclude ordinary small tasks.
 ---
 
 # Orchestrate focused, complete work
