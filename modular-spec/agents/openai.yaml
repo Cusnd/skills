@@ -1,0 +1,4 @@
+interface:
+  display_name: "Modular Spec"
+  short_description: "轻量组织细粒度规格文档，用链接关联内容，仅按明确要求开展调研"
+  default_prompt: "使用 $modular-spec 整理当前项目的 spec：按主题拆分文档，并用链接关联。"

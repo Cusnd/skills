@@ -15,6 +15,7 @@ The repository follows a personal, issue-only maintenance model: bug reports and
 | --- | --- | --- | --- |
 | [`frontend-design-concept`](frontend-design-concept/SKILL.md) | Interpret references, styles, and sensory language, explain the aesthetic relationships that give a design its character, and develop a vivid description before frontend work. | No tool dependency for ideation; implementation and visual verification use the target project's stack and available browser capabilities. | Implicit matching is allowed by default; use `$frontend-design-concept` to invoke it explicitly. |
 | [`ima-pdf-extractor`](ima-pdf-extractor/SKILL.md) | Save original files, PDFs, notes, articles, or knowledge-base content that a user is authorized to export from the Windows `ima.copilot` client while keeping credentials and signed URLs local. | Windows; direct-resource scripts use only the Python 3.10+ standard library; structured content may require controlled, browser-local capabilities. | Explicit invocation only: `$ima-pdf-extractor`. |
+| [`modular-spec`](modular-spec/SKILL.md) | Split specs into focused documents linked by topic; conduct separate research only when explicitly requested and incorporate the user's selected findings into specs. | Plain Markdown files; no specific toolchain required. | Implicit matching is allowed by default; use `$modular-spec` explicitly if desired. Research requires an explicit user request. |
 | [`orchestrate-workflow`](orchestrate-workflow/SKILL.md) | Keep the invoking session as orchestrator for medium or complex tasks when the user requests multi-agent or independent-session orchestration; delegate all concrete execution for complex tasks. | An agent environment with real subagents or independent executor contexts; capabilities depend on the host's callable tools. | Implicit matching is allowed by default; explicit `$orchestrate-workflow` invocation is recommended. |
 | [`pdf-watermark-removal`](pdf-watermark-removal/SKILL.md) | Inspect user-authorized PDFs, remove recurring watermarks or explicitly requested promotional pages with the least destructive method, and verify both structure and rendering. | Requires PDF parsers, renderers, and image-inspection capabilities available to the agent; the repository does not bind one toolchain. | Implicit matching is allowed by default; explicit `$pdf-watermark-removal` invocation is recommended. |
 
@@ -32,6 +33,12 @@ The repository follows a personal, issue-only maintenance model: bug reports and
 - Reuses established targets, title terms, and authorization; asks only about ambiguity, missing scope, or an action the user must perform. Verifies scope and mode before bulk download. Notes default to Markdown; URLs and articles default to saved links, with offline copies generated on request.
 - Some observed IMA request shapes are not public APIs and may drift with client releases. Re-observe the current local session when they fail instead of weakening credential boundaries.
 - Tokens, cookies, account identifiers, raw session contents, signed URLs, and query signatures must not enter chat, logs, filenames, or persistent artifacts.
+
+### `modular-spec`
+
+- Splits documents by concrete features, rules, or design questions, using an index and relative links while keeping shared rules in one place.
+- Reuses the project's directories, terminology, and language without imposing a body template or managing threads and task orchestration.
+- Uses the research area only when explicitly requested by the user.
 
 ### `orchestrate-workflow`
 
@@ -85,6 +92,8 @@ In Codex CLI or the IDE extension, type `$` to select a skill or name it directl
 $frontend-design-concept develop an artistic vision for this website, describe its form, color, space, and movement, then implement the frontend from that description.
 
 $ima-pdf-extractor save this PDF that I opened in ima.copilot and am authorized to export.
+
+$modular-spec organize this project's specs into focused documents connected by links.
 
 $orchestrate-workflow keep this session as orchestrator, preserve my intent, and delegate implementation and verification of this complex task to real executors.
 

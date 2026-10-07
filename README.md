@@ -15,6 +15,7 @@
 | --- | --- | --- | --- |
 | [`frontend-design-concept`](frontend-design-concept/SKILL.md) | 理解参考、风格与感受，提炼赋予作品性格的审美关系，自然展开为具体的设计描述，再按请求实现前端。 | 构思阶段不绑定工具；实现与视觉验证使用目标项目的技术栈及可用的浏览器能力。 | 默认允许匹配调用；可使用 `$frontend-design-concept` 明确指定。 |
 | [`ima-pdf-extractor`](ima-pdf-extractor/SKILL.md) | 从 Windows `ima.copilot` 客户端保存用户有权导出的原始文件、PDF、笔记、文章或知识库内容，并将登录凭据和签名 URL 留在本地。 | Windows；直接资源脚本使用 Python 3.10+ 标准库；结构化内容可能需要受控的浏览器本地能力。 | 仅显式调用：`$ima-pdf-extractor`。 |
+| [`modular-spec`](modular-spec/SKILL.md) | 按主题拆分细粒度 spec，用链接关联各部分；仅在用户明确要求时开展独立调研，并按选择合入 spec。 | 普通 Markdown 文件；不依赖特定工具链。 | 默认允许匹配调用；可使用 `$modular-spec` 明确指定；调研须由用户明确要求。 |
 | [`orchestrate-workflow`](orchestrate-workflow/SKILL.md) | 在用户请求多代理或独立会话编排的中等、复杂任务中，由当前会话协调真实执行器完成交付；复杂任务的具体执行全部委派。 | 支持真实子代理或独立执行上下文的 agent 环境；具体能力以宿主可调用工具为准。 | 默认允许匹配调用；建议使用 `$orchestrate-workflow` 明确指定。 |
 | [`pdf-watermark-removal`](pdf-watermark-removal/SKILL.md) | 检查用户授权的 PDF，以破坏性最低的方法移除重复水印或明确指定的宣传页，并同时进行结构和渲染验证。 | 需要 agent 可用的 PDF 解析器、渲染器及图像检查能力；仓库不绑定单一工具链。 | 默认允许匹配调用；建议使用 `$pdf-watermark-removal` 明确指定。 |
 
@@ -32,6 +33,12 @@
 - 沿用已明确的目标、关键词和授权，仅在目标歧义、范围缺失或需要用户操作时提问；批量下载前核实范围与模式。笔记默认 Markdown，URL 和文章默认保存链接，离线副本按请求生成。
 - IMA 的部分请求形态并非公开 API，可能随客户端版本变化；失效时应重新观察当前本地会话，而不是放宽凭据边界。
 - token、cookie、账号标识、原始会话内容、签名 URL 和查询签名不得进入聊天、日志、文件名或持久化产物。
+
+### `modular-spec`
+
+- 按具体功能、规则或设计问题拆分文档，用入口索引与相对链接组织内容，共用约定只写一处。
+- 复用项目现有目录、术语和语言，不强制正文模板，也不管理线程或任务编排。
+- 调研区仅在用户明确要求后按需使用。
 
 ### `orchestrate-workflow`
 
@@ -85,6 +92,8 @@ Codex 通常会自动检测 skill 变化；若新安装项没有出现，请重�
 $frontend-design-concept 为这个网站先从艺术角度展开构思，写出形色、空间与动势的设计描述，再据此实现前端。
 
 $ima-pdf-extractor 保存我已在 ima.copilot 中打开并有权导出的这份 PDF。
+
+$modular-spec 整理当前项目的 spec：按主题拆分文档，并用链接关联。
 
 $orchestrate-workflow 由当前会话协调真实执行器完成这个复杂任务，保留我的意图，并委派实现和验证。
 
