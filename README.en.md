@@ -36,7 +36,7 @@ The repository follows a personal, issue-only maintenance model: bug reports and
 
 ### `modular-spec`
 
-- Splits documents by concrete features, rules, or design questions, using an index and relative links while keeping shared rules in one place.
+- Splits documents by concrete features, rules, or design questions while preserving enough context to understand each topic; the directory layout is only an example.
 - Reuses the project's directories, terminology, and language without imposing a body template or managing threads and task orchestration.
 - Uses the research area only when explicitly requested by the user.
 
